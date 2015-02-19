@@ -132,25 +132,26 @@ class StanfordCoreNLP(object):
         Checks the location of the jar files.
         Spawns the server as a process.
         """
+        here = os.path.abspath(os.path.dirname(__file__))
         jars = ["stanford-corenlp-3.4.1.jar",
                 "stanford-corenlp-3.4.1-models.jar",
                 "joda-time.jar",
                 "xom.jar",
                 "jollyday.jar"]
-       
+
         # if CoreNLP libraries are in a different directory,
         # change the corenlp_path variable to point to them
         if not corenlp_path:
-            corenlp_path = "./stanford-corenlp-full-2014-08-27/"
-        
+            corenlp_path = os.path.join(here, "stanford-corenlp-full-2014-08-27")
+
         java_path = "java"
         classname = "edu.stanford.nlp.pipeline.StanfordCoreNLP"
         # include the properties file, so you can change defaults
         # but any changes in output format will break parse_parser_results()
-        props = "-props default.properties" 
-        
+        props = "-props {}".format(os.path.join(here, 'default.properties'))
+
         # add and check classpaths
-        jars = [corenlp_path + jar for jar in jars]
+        jars = [os.path.join(corenlp_path, jar) for jar in jars]
         for jar in jars:
             if not os.path.exists(jar):
                 logger.error("Error! Cannot locate %s" % jar)
