@@ -69,10 +69,15 @@ def parse_parser_results(text):
     interface of the CoreNLP tools.  Takes a string of the parser results
     and then returns a Python list of dictionaries, one for each parsed
     sentence.
+
+    Parameters
+    ----------
+    text : str
+        UTF-8 encoded string of CoreNLP parser results
     """
     results = {"sentences": []}
     state = STATE_START
-    for line in text.encode('utf-8').split("\n"):
+    for line in text.split("\n"):
         line = line.strip()
         
         if line.startswith("Sentence #"):
